@@ -12,13 +12,13 @@ struct infotypePT {
 };
 
 struct infotypeFakultas {
-    string kodeFak;
-    string namaFak;
+    string kodeFk;
+    string namaFk;
 };
 
 /* ====== Forward Declaration ====== */
 typedef struct elmPT *adr_pt;
-typedef struct elmFak *adr_fak;
+typedef struct elmFk *adr_fk;
 typedef struct elmRelasi *adr_rel;
 
 /* ====== Elemen ====== */
@@ -28,13 +28,13 @@ struct elmPT {
     adr_rel firstRelasi;
 };
 
-struct elmFak {
+struct elmFk {
     infotypeFakultas info;
-    adr_fak next;
+    adr_fk next;
 };
 
 struct elmRelasi {
-    adr_fak fak;
+    adr_fk fk;
     adr_rel next;
 };
 
@@ -43,32 +43,34 @@ struct listPT {
     adr_pt first;
 };
 
-struct listFak {
-    adr_fak first;
+struct listFk {
+    adr_fk first;
 };
 
 /* ====== Function & Procedure ====== */
 void createListPT(listPT &L);
-void createListFak(listFak &L);
+void createListFak(listFk &L);
 
 adr_pt createElmPT(infotypePT x);
-adr_fak createElmFak(infotypeFakultas x);
-adr_rel createElmRelasi(adr_fak f);
+adr_fk createElmFk(infotypeFakultas x);
+adr_rel createElmRelasi(adr_fk f);
 
 void insertLastPT(listPT &L, adr_pt p);
-void insertLastFak(listFak &L, adr_fak f);
+void insertLastFk(listFk &L, adr_fk f);
 
 adr_pt searchPT(listPT L, string kodePT);
-adr_fak searchFak(listFak L, string kodeFak);
+adr_fk searchFk(listFk L, string kodeFk);
 
-void addRelasi(listPT &LPT, listFak LF, string kodePT, string kodeFak);
+void addRelasi(listPT &LPT, listFk LF, string kodePT, string kodeFk);
 
 void deletePT(listPT &L, string kodePT);
-void deleteFak(listFak &L, string kodeFak);
+void deleteFk(listFk &L, string kodeFk);
 
 void showAllPT(listPT L);
 void showPTwithFakultas(listPT L, string kodePT);
-void showPTbyFakultas(listPT L, string kodeFak);
+void showPTbyFakultas(listPT L, string kodeFk);
 void showPTMaxMinFakultas(listPT L);
+
+// void showAll(listFk f, listPT p);
 
 #endif

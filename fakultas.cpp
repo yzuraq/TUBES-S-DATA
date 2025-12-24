@@ -5,7 +5,7 @@ void createListPT(listPT &L) {
     L.first = nullptr;
 }
 
-void createListFak(listFak &L) {
+void createListFak(listFk &L) {
     L.first = nullptr;
 }
 
@@ -18,16 +18,16 @@ adr_pt createElmPT(infotypePT x) {
     return p;
 }
 
-adr_fak createElmFak(infotypeFakultas x) {
-    adr_fak f = new elmFak;
+adr_fk createElmFk(infotypeFakultas x) {
+    adr_fk f = new elmFk;
     f->info = x;
     f->next = nullptr;
     return f;
 }
 
-adr_rel createElmRelasi(adr_fak f) {
+adr_rel createElmRelasi(adr_fk f) {
     adr_rel r = new elmRelasi;
-    r->fak = f;
+    r->fk = f;
     r->next = nullptr;
     return r;
 }
@@ -44,11 +44,11 @@ void insertLastPT(listPT &L, adr_pt p) {
     }
 }
 
-void insertLastFak(listFak &L, adr_fak f) {
+void insertLastFk(listFk &L, adr_fk f) {
     if (L.first == nullptr) {
         L.first = f;
     } else {
-        adr_fak temp = L.first;
+        adr_fk temp = L.first;
         while (temp->next != nullptr)
             temp = temp->next;
         temp->next = f;
@@ -66,10 +66,10 @@ adr_pt searchPT(listPT L, string kodePT) {
     return nullptr;
 }
 
-adr_fak searchFak(listFak L, string kodeFak) {
-    adr_fak f = L.first;
+adr_fk searchFk(listFk L, string kodeFk) {
+    adr_fk f = L.first;
     while (f != nullptr) {
-        if (f->info.kodeFak == kodeFak)
+        if (f->info.kodeFk == kodeFk)
             return f;
         f = f->next;
     }
@@ -77,16 +77,16 @@ adr_fak searchFak(listFak L, string kodeFak) {
 }
 
 /* ====== Relasi ====== */
-void addRelasi(listPT &LPT, listFak LF, string kodePT, string kodeFak) {
+void addRelasi(listPT &LPT, listFk LF, string kodePT, string kodeFk) {
     adr_pt pt = searchPT(LPT, kodePT);
-    adr_fak fak = searchFak(LF, kodeFak);
+    adr_fk fk = searchFk(LF, kodeFk);
 
-    if (pt == nullptr || fak == nullptr) {
+    if (pt == nullptr || fk == nullptr) {
         cout << "PT atau Fakultas tidak ditemukan!\n";
         return;
     }
 
-    adr_rel r = createElmRelasi(fak);
+    adr_rel r = createElmRelasi(fk);
     r->next = pt->firstRelasi;
     pt->firstRelasi = r;
 }
@@ -107,9 +107,9 @@ void deletePT(listPT &L, string kodePT) {
     }
 }
 
-void deleteFak(listFak &L, string kodeFak) {
-    adr_fak f = L.first, prev = nullptr;
-    while (f != nullptr && f->info.kodeFak != kodeFak) {
+void deleteFk(listFk &L, string kodeFk) {
+    adr_fk f = L.first, prev = nullptr;
+    while (f != nullptr && f->info.kodeFk != kodeFk) {
         prev = f;
         f = f->next;
     }
@@ -126,10 +126,10 @@ void deleteFak(listFak &L, string kodeFak) {
 void showAllPT(listPT L) {
     adr_pt p = L.first;
     while (p != nullptr) {
-        cout << "\nPT: " << p->info.namaPT << endl;
+        cout << "\nPT: " << p->info.namaPT << " (" << p->info.kodePT << ")\n";
         adr_rel r = p->firstRelasi;
         while (r != nullptr) {
-            cout << " - " << r->fak->info.namaFak << endl;
+            cout << " - " << r->fk->info.namaFk << " (" << r->fk->info.kodeFk << ")\n";
             r = r->next;
         }
         p = p->next;
@@ -142,18 +142,18 @@ void showPTwithFakultas(listPT L, string kodePT) {
         adr_rel r = p->firstRelasi;
         cout << "Fakultas di " << p->info.namaPT << ":\n";
         while (r != nullptr) {
-            cout << "- " << r->fak->info.namaFak << endl;
+            cout << "- " << r->fk->info.namaFk << endl;
             r = r->next;
         }
     }
 }
 
-void showPTbyFakultas(listPT L, string kodeFak) {
+void showPTbyFakultas(listPT L, string kodeFk) {
     adr_pt p = L.first;
     while (p != nullptr) {
         adr_rel r = p->firstRelasi;
         while (r != nullptr) {
-            if (r->fak->info.kodeFak == kodeFak) {
+            if (r->fk->info.kodeFk == kodeFk) {
                 cout << p->info.namaPT << endl;
             }
             r = r->next;
@@ -190,3 +190,13 @@ void showPTMaxMinFakultas(listPT L) {
         cout << "PT Fakultas Tersedikit: " << minPT->info.namaPT << endl;
     }
 }
+
+// void showFK(listFk f){
+//     adr_fk fk = f.first;
+//     while (fk != nullptr)
+//     {
+//         cout << "Kode Fakultas: " << fk->info.kodeFk << ", Nama Fakultas: " << fk->info.namaFk << endl;
+//         fk = fk->next;
+//     }
+    
+// }
