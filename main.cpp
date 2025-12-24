@@ -125,6 +125,7 @@ int main() {
         }
     } while (pilih != 0);
     cout << "\nProgram Selesai." << endl;
+    cout << "Terima kasih telah menggunakan program ini!" << endl;
 
     return 0;
 }
