@@ -72,5 +72,7 @@ void showPTbyFakultas(listPT L, string kodeFk);
 void showPTMaxMinFakultas(listPT L);
 
 // void showAll(listFk f, listPT p);
+bool cekKesamaanInputPT(listPT l, listFk f, string kodePT, string namaPT);
+bool cekKesamaanInputFk(listFk f, string kodeFk, string namaFk);
 
 #endif

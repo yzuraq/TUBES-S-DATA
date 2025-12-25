@@ -51,9 +51,9 @@ int main() {
         switch(pilih) {
             case 1: {
                 infotypePT p;
-                cout << "Masukkan kode PT: ";
+                cout << "Masukkan kode Perguruan Tinggi: ";
                 cin >> p.kodePT;
-                cout << "Masukkan nama PT: ";
+                cout << "Masukkan nama Perguruan Tinggi: ";
                 getline(cin >> ws, p.namaPT);
                 adr_pt newPT = createElmPT(p);
                 insertLastPT(LPT, newPT);

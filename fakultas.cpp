@@ -32,8 +32,39 @@ adr_rel createElmRelasi(adr_fk f) {
     return r;
 }
 
+bool cekKesamaanInputPT(listPT l, string kodePT, string namaPT){
+    adr_pt p = l.first;
+    while(p != nullptr){
+        if(p->info.kodePT == kodePT || p->info.namaPT == namaPT){
+            return true;
+        }
+        p = p->next;
+    }
+
+    return false;
+}
+
+bool cekKesamaanInputFk(listFk f, string kodeFk, string namaFk){
+    adr_fk fk = f.first;
+    while(fk != nullptr){
+        if(fk->info.kodeFk == kodeFk || fk->info.namaFk == namaFk){
+            return true;
+        }
+        fk = fk->next;
+    }
+
+    return false;
+}
+
+
 /* ====== Insert ====== */
 void insertLastPT(listPT &L, adr_pt p) {
+    if (cekKesamaanInputPT(L, p->info.kodePT, p->info.namaPT))
+    {
+        cout << "Data Perguruan Tinggi sudah ada!\n";
+        return;
+    }
+    
     if (L.first == nullptr) {
         L.first = p;
     } else {
@@ -45,6 +76,12 @@ void insertLastPT(listPT &L, adr_pt p) {
 }
 
 void insertLastFk(listFk &L, adr_fk f) {
+    if (cekKesamaanInputFk(L, f->info.kodeFk, f->info.namaFk))
+    {
+        cout << "Data Fakultas sudah ada!\n";
+        return;
+    }
+    
     if (L.first == nullptr) {
         L.first = f;
     } else {
