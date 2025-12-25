@@ -120,56 +120,130 @@ void addRelasi(listPT &LPT, listFk LF, string kodePT, string kodeFk) {
     adr_fk fk = searchFk(LF, kodeFk);
 
     if (pt == nullptr || fk == nullptr) {
-        cout << "PT atau Fakultas tidak ditemukan!\n";
+        cout << "Perguruan Tinggi atau Fakultas tidak ditemukan.\n";
         return;
     }
 
     adr_rel r = createElmRelasi(fk);
-    r->next = pt->firstRelasi;
-    pt->firstRelasi = r;
+    r->next = nullptr;
+    
+    if (pt->firstRelasi == nullptr) {
+        pt->firstRelasi = r;
+    } else {
+        adr_rel temp = pt->firstRelasi;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = r;
+    }
 }
 
 /* ====== Delete ====== */
-void deletePT(listPT &L, string kodePT) {
-    adr_pt p = L.first, prev = nullptr;
+void deletePT(listPT &LPT, string kodePT) {
+    adr_pt p = LPT.first;
+    adr_pt prev = nullptr;
+
+
     while (p != nullptr && p->info.kodePT != kodePT) {
         prev = p;
         p = p->next;
     }
-    if (p != nullptr) {
-        if (prev == nullptr)
-            L.first = p->next;
-        else
-            prev->next = p->next;
-        delete p;
+
+    if (p == nullptr) {
+        cout << "Data Perguruan Tinggi tidak ditemukan.\n";
+        return;
     }
+
+    adr_rel r = p->firstRelasi;
+    while (r != nullptr) {
+        adr_rel temp = r;
+        r = r->next;
+        delete temp;
+    }
+    p->firstRelasi = nullptr;
+
+    if (prev == nullptr) {
+        LPT.first = p->next;
+    } else {
+        prev->next = p->next;
+    }
+
+    cout << "Perguruan Tinggi dengan kode " 
+         << p->info.kodePT 
+         <<" berhasil dihapus!\n";
+    delete p;
 }
 
-void deleteFk(listFk &L, string kodeFk) {
-    adr_fk f = L.first, prev = nullptr;
-    while (f != nullptr && f->info.kodeFk != kodeFk) {
-        prev = f;
-        f = f->next;
+void deleteFk(listFk &LFk, listPT &LPT, string kodeFk) {
+    adr_fk fk = LFk.first;
+    adr_fk prevFk = nullptr;
+
+    while (fk != nullptr && fk->info.kodeFk != kodeFk) {
+        prevFk = fk;
+        fk = fk->next;
     }
-    if (f != nullptr) {
-        if (prev == nullptr)
-            L.first = f->next;
-        else
-            prev->next = f->next;
-        delete f;
+
+    if (fk == nullptr) {
+        cout << "Data Fakultas tidak ditemukan.\n";
+        return;
     }
+
+    adr_pt p = LPT.first;
+    while (p != nullptr) {
+        adr_rel r = p->firstRelasi;
+        adr_rel prev = nullptr;
+
+        while (r != nullptr) {
+            if (r->fk == fk) {
+                if (prev == nullptr) {
+                    p->firstRelasi = r->next;
+                } else {
+                    prev->next = r->next;
+                }
+                adr_rel del = r;
+                r = r->next;
+                delete del;
+            } else {
+                prev = r;
+                r = r->next;
+            }
+        }
+        p = p->next;
+    }
+
+    if (prevFk == nullptr) {
+        LFk.first = fk->next;
+    } else {
+        prevFk->next = fk->next;
+    }
+
+     cout << "Fakultas dengan kode " 
+          << fk->info.kodeFk 
+          << " berhasil dihapus!\n";
+    delete fk;
 }
 
 /* ====== Show ====== */
 void showAllPT(listPT L) {
     adr_pt p = L.first;
+    if (p == nullptr) {
+        cout << "Tidak ada data Perguruan Tinggi.\n";
+        return;
+    }
     while (p != nullptr) {
-        cout << "\nPerguruan Tinggi: " << p->info.namaPT << " (" << p->info.kodePT << ")\n";
+        cout << "Perguruan Tinggi: " << p->info.namaPT 
+             << " (" << p->info.kodePT << ")\n";
         adr_rel r = p->firstRelasi;
-        while (r != nullptr) {
-            cout << "\t\t  - " << r->fk->info.namaFk << " (" << r->fk->info.kodeFk << ")\n";
-            r = r->next;
+        if (r == nullptr) {
+            cout << "  - Tidak ada fakultas.\n";
+        } else {
+            while (r != nullptr) {
+                cout << "\t\t  - " << r->fk->info.namaFk << " (" 
+                     << r->fk->info.kodeFk << ")\n";
+                r = r->next;
+            }
         }
+        cout << endl;
         p = p->next;
     }
 }
@@ -178,7 +252,8 @@ void showPTwithFakultas(listPT L, string kodePT) {
     adr_pt p = searchPT(L, kodePT);
     if (p != nullptr) {
         adr_rel r = p->firstRelasi;
-        cout << "Fakultas di " << p->info.namaPT << ":\n";
+        cout << "Fakultas yang ada di Perguruan Tinggi " 
+             << p->info.namaPT << ":\n";
         while (r != nullptr) {
             cout << "- " << r->fk->info.namaFk << endl;
             r = r->next;
@@ -186,7 +261,14 @@ void showPTwithFakultas(listPT L, string kodePT) {
     }
 }
 
-void showPTbyFakultas(listPT L, string kodeFk) {
+void showPTbyFakultas(listPT L, listFk LFk, string kodeFk) {
+    adr_fk fk = searchFk(LFk, kodeFk);
+    if (fk == nullptr) {
+        cout << "Data Fakultas tidak ditemukan.\n";
+        return;
+    }
+    cout << "Perguruan Tinggi yang memiliki Fakultas " 
+         << fk->info.namaFk << ":\n";
     adr_pt p = L.first;
     while (p != nullptr) {
         adr_rel r = p->firstRelasi;
@@ -203,7 +285,6 @@ void showPTbyFakultas(listPT L, string kodeFk) {
 void showPTMaxMinFakultas(listPT L) {
     adr_pt p = L.first;
     int max = -1, min = 999;
-    adr_pt maxPT = nullptr, minPT = nullptr;
 
     while (p != nullptr) {
         int count = 0;
@@ -212,19 +293,42 @@ void showPTMaxMinFakultas(listPT L) {
             count++;
             r = r->next;
         }
-        if (count > max) {
-            max = count;
-            maxPT = p;
-        }
-        if (count < min) {
-            min = count;
-            minPT = p;
-        }
+        if (count > max) max = count;
+        if (count < min) min = count;
         p = p->next;
     }
 
-    if (maxPT && minPT) {
-        cout << "PT Fakultas Terbanyak: " << maxPT->info.namaPT << " (" << max << ")" << endl;
-        cout << "PT Fakultas Tersedikit: " << minPT->info.namaPT << " (" << min << ")" << endl;
+    cout << "Perguruan Tinggi dengan Fakultas Terbanyak (" 
+         << max << "):\n";
+    p = L.first;
+    while (p != nullptr) {
+        int count = 0;
+        adr_rel r = p->firstRelasi;
+        while (r != nullptr) {
+            count++;
+            r = r->next;
+        }
+        if (count == max)
+            cout << "- " << p->info.namaPT << endl;
+        p = p->next;
     }
+    cout << endl;
+
+    cout << "Perguruan Tinggi dengan Fakultas Tersedikit (" 
+         << min << "):\n";
+    p = L.first;
+    while (p != nullptr) {
+        int count = 0;
+        adr_rel r = p->firstRelasi;
+        while (r != nullptr) {
+            count++;
+            r = r->next;
+        }
+        if (count == min)
+            cout << "- " << p->info.namaPT 
+                 << endl;
+        p = p->next;
+    }
+    cout << endl;
 }
+

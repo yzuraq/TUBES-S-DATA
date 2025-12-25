@@ -73,13 +73,13 @@ adr_fk searchFk(listFk L, string kodeFk);
 void addRelasi(listPT &LPT, listFk LF, string kodePT, string kodeFk);
 
 /* ====== Delete ====== */
-void deletePT(listPT &L, string kodePT);
-void deleteFk(listFk &L, string kodeFk);
+void deletePT(listPT &LPT, string kodePT);
+void deleteFk(listFk &LFk, listPT &LPT, string kodeFk);
 
 /* ====== Show ====== */
 void showAllPT(listPT L);
-void showPTwithFakultas(listPT L, string kodePT);
-void showPTbyFakultas(listPT L, string kodeFk);
+void showPTwithFakultas(listPT LPT, string kodePT);
+void showPTbyFakultas(listPT LPT, listFk LFk, string kodeFk);
 void showPTMaxMinFakultas(listPT L);
 
 #endif
