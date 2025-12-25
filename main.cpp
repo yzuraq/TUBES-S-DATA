@@ -8,28 +8,28 @@ int main() {
 
     string kode_pt[2] = {"PT001", "PT002"};
     string nama_pt[2] = {"Telkom University", "ITS"};
-    string kode_fk[4] = {"FK001", "FK002", "FK003", "FK004"};
+    string kode_fk[4] = {"Fk001", "Fk002", "Fk003", "Fk004"};
     string nama_fk[4] = {"Informatika", "Elektro", "Teknik Mesin", "Sipil"};
     
     for (int i = 0; i < 2; i++) {
-        infotypePT x;
-        x.kodePT = kode_pt[i];
-        x.namaPT = nama_pt[i];
-        insertLastPT(LPT, createElmPT(x));
+        infotypePT p;
+        p.kodePT = kode_pt[i];
+        p.namaPT = nama_pt[i];
+        insertLastPT(LPT, createElmPT(p));
     }
     
     for (int i = 0; i < 4; i++) {
-        infotypeFakultas f;
+        infotypeFk f;
         f.kodeFk = kode_fk[i];
         f.namaFk = nama_fk[i];
         insertLastFk(LF, createElmFk(f));
     }
  
-    addRelasi(LPT, LF, "PT001", "FK001");
-    addRelasi(LPT, LF, "PT001", "FK002");
-    addRelasi(LPT, LF, "PT002", "FK003");
-    addRelasi(LPT, LF, "PT002", "FK001");
-    addRelasi(LPT, LF, "PT002", "FK004");
+    addRelasi(LPT, LF, "PT001", "Fk001");
+    addRelasi(LPT, LF, "PT001", "Fk002");
+    addRelasi(LPT, LF, "PT002", "Fk003");
+    addRelasi(LPT, LF, "PT002", "Fk001");
+    addRelasi(LPT, LF, "PT002", "Fk004");
 
     int pilih;
     do {
@@ -61,7 +61,7 @@ int main() {
                 break;
             }
             case 2: {
-                infotypeFakultas f;
+                infotypeFk f;
                 cout << "Masukkan kode Fakultas: ";
                 cin >> f.kodeFk;
                 cout << "Masukkan nama Fakultas: ";
@@ -73,7 +73,7 @@ int main() {
             }
             case 3: {
                 string kodePT, kodeFk;
-                cout << "Masukkan kode PT: ";
+                cout << "Masukkan kode Perguruan Tinggi: ";
                 cin >> kodePT;
                 cout << "Masukkan kode Fakultas: ";
                 cin >> kodeFk;
@@ -83,7 +83,7 @@ int main() {
             }
             case 4: {
                 string kodePTDel;
-                cout << "Masukkan kode PT yang akan dihapus: ";
+                cout << "Masukkan kode Perguruan Tinggi yang akan dihapus: ";
                 cin >> kodePTDel;
                 deletePT(LPT, kodePTDel);
                 cout << endl;
@@ -99,11 +99,12 @@ int main() {
             }
             case 6: {
                 showAllPT(LPT);
+                cout << endl;
                 break;
             }
             case 7: {
                 string kodePTSearch;
-                cout << "Masukkan kode PT: ";
+                cout << "Masukkan kode Perguruan Tinggi: ";
                 cin >> kodePTSearch;
                 showPTwithFakultas(LPT, kodePTSearch);
                 cout << endl;
@@ -124,8 +125,8 @@ int main() {
             }
         }
     } while (pilih != 0);
-    cout << "\nProgram Selesai." << endl;
-    cout << "Terima kasih telah menggunakan program ini!" << endl;
+    cout << "Program Selesai.\n";
+    cout << "Terima kasih telah menggunakan program ini!\n\n";
 
     return 0;
 }

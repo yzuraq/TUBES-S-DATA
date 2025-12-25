@@ -11,7 +11,7 @@ struct infotypePT {
     string namaPT;
 };
 
-struct infotypeFakultas {
+struct infotypeFk {
     string kodeFk;
     string namaFk;
 };
@@ -29,7 +29,7 @@ struct elmPT {
 };
 
 struct elmFk {
-    infotypeFakultas info;
+    infotypeFk info;
     adr_fk next;
 };
 
@@ -48,31 +48,38 @@ struct listFk {
 };
 
 /* ====== Function & Procedure ====== */
+/* ====== Create List ====== */
 void createListPT(listPT &L);
 void createListFak(listFk &L);
 
+/* ====== Create Element ====== */
 adr_pt createElmPT(infotypePT x);
-adr_fk createElmFk(infotypeFakultas x);
+adr_fk createElmFk(infotypeFk x);
 adr_rel createElmRelasi(adr_fk f);
 
+/* ====== Cek Kesamaan Input ====== */
+bool cekKesamaanInputPT(listPT l, string kodePT, string namaPT);
+bool cekKesamaanInputFk(listFk f, string kodeFk, string namaFk);
+
+/* ====== Insert ====== */
 void insertLastPT(listPT &L, adr_pt p);
 void insertLastFk(listFk &L, adr_fk f);
 
+/* ====== Search ====== */
 adr_pt searchPT(listPT L, string kodePT);
 adr_fk searchFk(listFk L, string kodeFk);
 
+/* ====== Relasi ====== */
 void addRelasi(listPT &LPT, listFk LF, string kodePT, string kodeFk);
 
+/* ====== Delete ====== */
 void deletePT(listPT &L, string kodePT);
 void deleteFk(listFk &L, string kodeFk);
 
+/* ====== Show ====== */
 void showAllPT(listPT L);
 void showPTwithFakultas(listPT L, string kodePT);
 void showPTbyFakultas(listPT L, string kodeFk);
 void showPTMaxMinFakultas(listPT L);
-
-// void showAll(listFk f, listPT p);
-bool cekKesamaanInputPT(listPT l, listFk f, string kodePT, string namaPT);
-bool cekKesamaanInputFk(listFk f, string kodeFk, string namaFk);
 
 #endif

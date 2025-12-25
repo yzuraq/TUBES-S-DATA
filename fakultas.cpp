@@ -18,7 +18,7 @@ adr_pt createElmPT(infotypePT x) {
     return p;
 }
 
-adr_fk createElmFk(infotypeFakultas x) {
+adr_fk createElmFk(infotypeFk x) {
     adr_fk f = new elmFk;
     f->info = x;
     f->next = nullptr;
@@ -32,6 +32,7 @@ adr_rel createElmRelasi(adr_fk f) {
     return r;
 }
 
+/* ====== Cek Kesamaan Input ====== */
 bool cekKesamaanInputPT(listPT l, string kodePT, string namaPT){
     adr_pt p = l.first;
     while(p != nullptr){
@@ -163,10 +164,10 @@ void deleteFk(listFk &L, string kodeFk) {
 void showAllPT(listPT L) {
     adr_pt p = L.first;
     while (p != nullptr) {
-        cout << "\nPT: " << p->info.namaPT << " (" << p->info.kodePT << ")\n";
+        cout << "\nPerguruan Tinggi: " << p->info.namaPT << " (" << p->info.kodePT << ")\n";
         adr_rel r = p->firstRelasi;
         while (r != nullptr) {
-            cout << " - " << r->fk->info.namaFk << " (" << r->fk->info.kodeFk << ")\n";
+            cout << "\t\t  - " << r->fk->info.namaFk << " (" << r->fk->info.kodeFk << ")\n";
             r = r->next;
         }
         p = p->next;
@@ -223,17 +224,7 @@ void showPTMaxMinFakultas(listPT L) {
     }
 
     if (maxPT && minPT) {
-        cout << "PT Fakultas Terbanyak: " << maxPT->info.namaPT << endl;
-        cout << "PT Fakultas Tersedikit: " << minPT->info.namaPT << endl;
+        cout << "PT Fakultas Terbanyak: " << maxPT->info.namaPT << " (" << max << ")" << endl;
+        cout << "PT Fakultas Tersedikit: " << minPT->info.namaPT << " (" << min << ")" << endl;
     }
 }
-
-// void showFK(listFk f){
-//     adr_fk fk = f.first;
-//     while (fk != nullptr)
-//     {
-//         cout << "Kode Fakultas: " << fk->info.kodeFk << ", Nama Fakultas: " << fk->info.namaFk << endl;
-//         fk = fk->next;
-//     }
-    
-// }
